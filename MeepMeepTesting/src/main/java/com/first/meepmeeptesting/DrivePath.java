@@ -68,6 +68,25 @@ public class DrivePath {
 //                    .stopAndAdd(new Shooter(3, 1))
                         .build();
                 return preloadNineBalls;
+            case PRELOAD_NINE_BALLS_ALTSTART:
+                Action preloadNineBallsAltstart = bot.getDrive().actionBuilder(preloadNineBallsAltStartStart)
+                        .waitSeconds(1)
+                        .lineToY(-30)
+                        .splineToSplineHeading(new Pose2d(12, -34, Math.toRadians(270)), Math.toRadians(270))
+                        .lineToY(-50)
+                        .lineToYLinearHeading(-30, Math.toRadians(250))
+                        .splineToLinearHeading(new Pose2d(-52.5, -49.5, Math.toRadians(235)), Math.toRadians(230))
+                        .waitSeconds(1)
+//                    .stopAndAdd(new Shooter(3, 1))
+                        .lineToY(-30)
+                        .splineToLinearHeading(new Pose2d(-12, -30, Math.toRadians(270)), Math.toRadians(270))
+                        .lineToY(-50)
+                        .lineToYLinearHeading(-30, Math.toRadians(250))
+                        .splineToLinearHeading(new Pose2d(-52.5, -49.5, Math.toRadians(235)), Math.toRadians(230))
+                        .waitSeconds(1)
+//                    .stopAndAdd(new Shooter(3, 1))
+                        .build();
+                return preloadNineBallsAltstart;
                 
 
 
