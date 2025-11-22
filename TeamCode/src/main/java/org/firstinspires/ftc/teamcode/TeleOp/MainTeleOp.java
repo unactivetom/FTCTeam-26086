@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "Main", group = "DECODE")
 public class MainTeleOp extends OpMode {
 
-    private MechanumFieldCentric drive = new MechanumFieldCentric(false);
+    private Tank drive = new Tank(false);
 
 
     @Override
@@ -21,7 +21,7 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop(){
         telemetry.addData("### TELEOP ###", "");
-        drive.DriveLoop(gamepad1);
+        drive.driveLoop(gamepad1);
 
         telemetry.update();
     }

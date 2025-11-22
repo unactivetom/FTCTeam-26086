@@ -1,16 +1,12 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.Range;
 
+
 public class Tank extends Drive{
 
-
-    //Define DC motors, these are the motors for driving
-    private DcMotor left_drive;
-    private DcMotor right_drive;
 
     //These variables are just to calculate the speed
     public double left_power;
@@ -24,7 +20,7 @@ public class Tank extends Drive{
     }
 
     public void Init(HardwareMap hardwareMap){
-        super.initializer((byte) 2, hardwareMap);
+        super.initializer((byte) 4, hardwareMap);
     }
 
     public void driveLoop(Gamepad gamepad1) {
@@ -41,8 +37,7 @@ public class Tank extends Drive{
             right_power = Range.clip((slow_drive - slow_turn - fast_turn), -1.0, 1.0);
 
             //Send the power to the motors
-            left_drive.setPower(left_power);
-            right_drive.setPower(right_power);
+            super.setPowers(left_power, right_power, left_power, right_power);
         }
 
         if(debug) super.Logger((float)left_power,(float)right_power,-gamepad1.left_stick_x,-gamepad1.left_stick_y,-gamepad1.right_stick_x);

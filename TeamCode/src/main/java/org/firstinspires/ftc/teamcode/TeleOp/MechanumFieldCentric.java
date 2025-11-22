@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 
+import static org.firstinspires.ftc.teamcode.TeleOp.Constants.*;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -55,10 +57,10 @@ public class MechanumFieldCentric extends Drive{
         rightBackPower /= (float) max;
 
         // Set motor powers
-        leftFront.setPower(debug ? leftFrontPower / 4 : leftFrontPower);
-        rightFront.setPower(debug ? rightFrontPower / 4 : rightFrontPower);
-        leftBack.setPower(debug ? leftBackPower / 4 : leftBackPower);
-        rightBack.setPower(debug ? rightBackPower / 4 : rightBackPower);
+        leftFront.setPower((debug ? leftFrontPower / 4 : leftFrontPower)*LFTUNE.value);
+        rightFront.setPower((debug ? rightFrontPower / 4 : rightFrontPower)*RFTUNE.value);
+        leftBack.setPower((debug ? leftBackPower / 4 : leftBackPower)*LBTUNE.value);
+        rightBack.setPower((debug ? rightBackPower / 4 : rightBackPower)*RBTUNE.value);
 
         if(gamepad1.cross) super.toggleBrake(); //to break
 

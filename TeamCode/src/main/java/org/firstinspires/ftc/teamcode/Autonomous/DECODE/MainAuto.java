@@ -14,20 +14,30 @@ public class MainAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Shooter shooter = new Shooter(0, 0);
-        DrivePath drive = new DrivePath();
-        shooter.init(hardwareMap);
-
+        //DrivePath drive = new DrivePath();
+        Tank drive = new Tank();
+        //shooter.init(hardwareMap);
+        drive.init(hardwareMap);
 
         waitForStart();
 
-        shooter.intakeOn(true);
+        drive.driveOn();
+        sleep(1000);
+        drive.driveOff();
 
 
-        Actions.runBlocking(new SequentialAction(drive.getPath(1)));
+        //shooter.intakeOn(true);
 
 
-        shooter.intakeOn(false);
-        shooter.pusherOn(false);
-        shooter.shooterSet(0);
+        //Actions.runBlocking(new SequentialAction(drive.getPath(DrivePath.autoPaths.PRELOAD_NINE_BALLS)));
+
+
+        //shooter.intakeOn(false);
+        //shooter.pusherOn(false);
+        //shooter.shooterSet(0);
     }
+
+
+
+
 }

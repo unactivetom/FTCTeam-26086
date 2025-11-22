@@ -66,6 +66,14 @@ public class Drive {
         }
     }
 
+    protected void setPowers(double leftBackPower, double rightBackPower, double leftFrontPower, double rightFrontPower){
+        leftFront.setPower(leftFrontPower);
+        rightFront.setPower(rightFrontPower);
+        leftBack.setPower(leftBackPower);
+        rightBack.setPower(rightBackPower);
+
+    }
+
     protected void Logger(float leftFrontPower, float rightFrontPower, float leftBackPower, float rightBackPower, Orientation angles, float inputLX, float inputLY, float inputRX){
         main.log();
         main.log("########DEBUG########");
