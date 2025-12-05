@@ -13,10 +13,10 @@ public class MainAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Shooter shooter = new Shooter(0, 0);
+        Shooter shooter = new Shooter(3, 1);
         //DrivePath drive = new DrivePath();
         Tank drive = new Tank();
-        //shooter.init(hardwareMap);
+        shooter.init(hardwareMap);
         drive.init(hardwareMap);
 
         waitForStart();
@@ -24,6 +24,7 @@ public class MainAuto extends LinearOpMode {
         drive.driveOn();
         sleep(1000);
         drive.driveOff();
+        shooter.run();
 
 
         //shooter.intakeOn(true);

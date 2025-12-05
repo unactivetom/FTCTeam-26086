@@ -19,15 +19,15 @@ public class Tank extends Drive{
         this.debug = debug;
     }
 
-    public void Init(HardwareMap hardwareMap){
-        super.initializer((byte) 4, hardwareMap);
+    public void init(HardwareMap hardwareMap){
+        super.initializer((byte) 2, hardwareMap);
     }
 
     public void driveLoop(Gamepad gamepad1) {
         double slow_drive = -gamepad1.left_stick_y * Constants.SLOW_SPEED;
         double slow_turn = gamepad1.left_stick_x * Constants.SLOW_SPEED;
         double fast_turn  =  gamepad1.right_stick_x;
-        slow_drive += Fast_drive(gamepad1); //We want the fast drive to overwrite the slow speed
+        slow_drive += fastDrive(gamepad1); //We want the fast drive to overwrite the slow speed
 
         if(gamepad1.cross){
             super.toggleBrake();
@@ -37,13 +37,13 @@ public class Tank extends Drive{
             right_power = Range.clip((slow_drive - slow_turn - fast_turn), -1.0, 1.0);
 
             //Send the power to the motors
-            super.setPowers(left_power, right_power, left_power, right_power);
+            super.setPowers(left_power*0.85, right_power, left_power, right_power);
         }
 
         if(debug) super.Logger((float)left_power,(float)right_power,-gamepad1.left_stick_x,-gamepad1.left_stick_y,-gamepad1.right_stick_x);
     }
 
-    private double Fast_drive(Gamepad gamepad1){ //this function return a value of 1 when pressed, and a value of 0 when not
+    private double fastDrive(Gamepad gamepad1){ //this function return a value of 1 when pressed, and a value of 0 when not
         double drive_speed = 0; //every frame reset to 0
         if(gamepad1.right_trigger > 0){ //if the right trigger is pressed
 

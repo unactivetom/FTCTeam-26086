@@ -3,18 +3,24 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.TeleOp.DECODESEASON.Mechanism;
+
 
 @TeleOp(name = "Main", group = "DECODE")
 public class MainTeleOp extends OpMode {
 
-    private Tank drive = new Tank(false);
+    private Mechanism mechanism = new Mechanism();
+    private Tank drive;
 
 
     @Override
     public void init(){
-        telemetry.addData("### INIT ###", "");
-        drive.Init(hardwareMap);
+        if(drive == null) drive = new Tank(true);
 
+        System.out.println("### INIT ###");
+        telemetry.addData("### INIT ###", "");
+        drive.init(hardwareMap);
+        mechanism.init(hardwareMap);
         telemetry.update();
     }
 
@@ -22,7 +28,7 @@ public class MainTeleOp extends OpMode {
     public void loop(){
         telemetry.addData("### TELEOP ###", "");
         drive.driveLoop(gamepad1);
-
+        mechanism.loop(gamepad1);
         telemetry.update();
     }
 

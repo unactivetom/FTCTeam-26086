@@ -36,13 +36,13 @@ public class Mechanism {
     }
 
     public void loop(Gamepad gamepad){
-        if(gamepad.cross)
+        if(gamepad.right_bumper)
             intake(true, true);
-        if(gamepad.crossWasReleased())
+        if(gamepad.rightBumperWasReleased())
             intake(false, true);
-        if(gamepad.square)
+        if(gamepad.left_bumper)
             shooter(true);
-        if(gamepad.squareWasReleased())
+        if(gamepad.leftBumperWasReleased())
             shooter(false);
         if(gamepad.circle)
             intake(true, false);

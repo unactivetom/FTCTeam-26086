@@ -17,17 +17,16 @@ public class MechanumRobotCentric extends Drive{
         this.debug = debugMode;
     }
 
-    public void Init(HardwareMap hardwareMap){
+    public void init(HardwareMap hardwareMap){
         super.initializer((byte) 4, hardwareMap);
         super.setBrake(true);
     }
 
-    public void DriveLoop(Gamepad gamepad1) {
+    public void driveLoop(Gamepad gamepad1) {
         // Get IMU heading in radians
 
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        double heading = angles.firstAngle;
+        Orientation anglesDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         // Get joystick inputs for movement
         float inputLY = -gamepad1.left_stick_y; // forward/back
@@ -57,7 +56,7 @@ public class MechanumRobotCentric extends Drive{
 
 
         //debugger:
-        if (debug) super.Logger(leftFrontPower,rightFrontPower,leftBackPower,rightBackPower,angles,inputLX,inputLY,inputRX);
+        if (debug) super.Logger(leftFrontPower,rightFrontPower,leftBackPower,rightBackPower,anglesDegree,inputLX,inputLY,inputRX);
     }
 
 }

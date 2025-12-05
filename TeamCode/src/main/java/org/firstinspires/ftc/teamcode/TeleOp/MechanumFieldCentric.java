@@ -21,18 +21,18 @@ public class MechanumFieldCentric extends Drive{
         super();
         debug = debugMode;
     }
-    public void Init(HardwareMap hardwareMap){
+    public void init(HardwareMap hardwareMap){
         super.initializer((byte) 4, hardwareMap);
         setBrake(true);
     }
 
 
-    public void DriveLoop(Gamepad gamepad1) {
+    public void driveLoop(Gamepad gamepad1) {
         // Get IMU heading in radians
 
-
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        double heading = angles.firstAngle;
+        Orientation angelsDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        Orientation anglesRadians = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
+        double heading = anglesRadians.firstAngle;
 
         // Get joystick inputs for movement
         float inputLY = -gamepad1.left_stick_y; // forward/back
@@ -57,15 +57,15 @@ public class MechanumFieldCentric extends Drive{
         rightBackPower /= (float) max;
 
         // Set motor powers
-        leftFront.setPower((debug ? leftFrontPower / 4 : leftFrontPower)*LFTUNE.value);
-        rightFront.setPower((debug ? rightFrontPower / 4 : rightFrontPower)*RFTUNE.value);
-        leftBack.setPower((debug ? leftBackPower / 4 : leftBackPower)*LBTUNE.value);
-        rightBack.setPower((debug ? rightBackPower / 4 : rightBackPower)*RBTUNE.value);
-
+//        leftFront.setPower((debug ? leftFrontPower / 4 : leftFrontPower)*LFTUNE.value);
+//        rightFront.setPower((debug ? rightFrontPower / 4 : rightFrontPower)*RFTUNE.value);
+//        leftBack.setPower((debug ? leftBackPower / 4 : leftBackPower)*LBTUNE.value);
+//        rightBack.setPower((debug ? rightBackPower / 4 : rightBackPower)*RBTUNE.value);
+        super.setPowers((debug ? leftBackPower / 4 : leftBackPower)*LBTUNE.value, (debug ? rightBackPower / 4 : rightBackPower)*RBTUNE.value, (debug ? leftFrontPower / 4 : leftFrontPower)*LFTUNE.value, (debug ? rightFrontPower / 4 : rightFrontPower)*RFTUNE.value);
         if(gamepad1.cross) super.toggleBrake(); //to break
 
 
         //debugger:
-        if (debug) super.Logger(leftFrontPower,rightFrontPower,leftBackPower,rightBackPower,angles,inputLX,inputLY,inputRX);
+        if (debug) super.Logger(leftFrontPower,rightFrontPower,leftBackPower,rightBackPower,angelsDegree,inputLX,inputLY,inputRX);
     }
 }
