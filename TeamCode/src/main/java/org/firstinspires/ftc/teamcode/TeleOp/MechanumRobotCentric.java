@@ -12,6 +12,13 @@ public class MechanumRobotCentric extends Drive{
 
     private boolean debug;
 
+
+    private float leftFrontPower;
+    private float rightFrontPower;
+    private float leftBackPower;
+    private float rightBackPower;
+
+
     public MechanumRobotCentric(boolean debugMode){
         super();
         this.debug = debugMode;
@@ -30,27 +37,24 @@ public class MechanumRobotCentric extends Drive{
 
         // Get joystick inputs for movement
         float inputLY = -gamepad1.left_stick_y; // forward/back
-        float inputLX = -gamepad1.left_stick_x; // strafe, with slight adjustment
-        float inputRX = -gamepad1.right_stick_x; // rotation
+        float inputLX = gamepad1.left_stick_x; // strafe, with slight adjustment
+        float inputRX = gamepad1.right_stick_x; // rotation
 
 
         // Calculate motor powers for mecanum drive
-        float leftFrontPower = inputLY + inputLX + inputRX;
-        float rightFrontPower = inputLY - inputLX - inputRX;
-        float leftBackPower = inputLY - inputLX + inputRX;
-        float rightBackPower = inputLY + inputLX - inputRX;
+        leftFrontPower = inputLY + inputLX + inputRX;
+        rightFrontPower = inputLY - inputLX - inputRX;
+        leftBackPower = inputLY - inputLX + inputRX;
+        rightBackPower = inputLY + inputLX - inputRX;
 
         // Normalize motor powers if any exceeds 1.0
-        double max = Math.max(1.0, Math.abs(leftFrontPower));
 
-
-        rightBackPower /= (float) max;
 
         // Set motor powers
-        leftFront.setPower(debug ? leftFrontPower / 4 : leftFrontPower);
-        rightFront.setPower(debug ? rightFrontPower / 4 : rightFrontPower);
-        leftBack.setPower(debug ? leftBackPower / 4 : leftBackPower);
-        rightBack.setPower(debug ? rightBackPower / 4 : rightBackPower);
+        leftFront.setPower(debug ? leftFrontPower / 4 : leftFrontPower / 2);
+        rightFront.setPower(debug ? rightFrontPower / 4 : rightFrontPower / 2);
+        leftBack.setPower(debug ? leftBackPower / 4 : leftBackPower / 2);
+        rightBack.setPower(debug ? rightBackPower / 4 : rightBackPower / 2);
 
         if(gamepad1.cross) super.toggleBrake(); //to break
 

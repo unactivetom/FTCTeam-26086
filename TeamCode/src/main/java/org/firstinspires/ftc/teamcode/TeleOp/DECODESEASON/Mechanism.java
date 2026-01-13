@@ -1,16 +1,16 @@
 package org.firstinspires.ftc.teamcode.TeleOp.DECODESEASON;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Mechanism {
 
-    DcMotorEx intake;
+    DcMotor intake;
     //DcMotorEx indexer;
-    DcMotorEx shooter;
+    DcMotor shooter;
+    DcMotor upperThroughPut;
 
     int intakeSpeed = 288*2;  //in ticks per sec, 288 is one rotation
     int indexerSpeed = 288*2;  //in ticks per sec, 288 is one rotation
@@ -22,12 +22,14 @@ public class Mechanism {
     }
 
     public void init(HardwareMap hardwareMap){
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake = hardwareMap.get(DcMotor.class, "intake");
 //        indexer = hardwareMap.get(DcMotorEx.class, "indexer");
-        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        shooter = hardwareMap.get(DcMotor.class, "shooter");
+        upperThroughPut = hardwareMap.get(DcMotor.class, "upperThroughPut");
 
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        upperThroughPut.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         //indexer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         shooter.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -48,6 +50,10 @@ public class Mechanism {
             intake(true, false);
         if(gamepad.circleWasReleased())
             intake(false, false);
+        if(gamepad.cross)
+            upperThroughPut(true);
+        if(gamepad.crossWasReleased())
+            upperThroughPut(false);
 
 
     }
@@ -57,14 +63,14 @@ public class Mechanism {
         intake.setPower(value ? direction : 0);
     }
 
-//    private void indexer(boolean value){
-//        indexer.setVelocity(value ? indexerSpeed : 0);
-//    }
+
     private void shooter(boolean value){
         shooter.setPower(value ? 1 : 0);
     }
 
-
+    private void upperThroughPut(boolean value){
+        upperThroughPut.setPower(value ? 1 : 0);
+    }
 
 
 

@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 
-import static org.firstinspires.ftc.teamcode.TeleOp.Constants.*;
-
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -32,11 +30,11 @@ public class MechanumFieldCentric extends Drive{
 
         Orientation angelsDegree = super.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         Orientation anglesRadians = super.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
-        double heading = anglesRadians.firstAngle;
+        double heading = anglesRadians.thirdAngle;
 
         // Get joystick inputs for movement
         float inputLY = -gamepad1.left_stick_y; // forward/back
-        float inputLX = -gamepad1.left_stick_x; // strafe, with slight adjustment
+        float inputLX = gamepad1.left_stick_x; // strafe, with slight adjustment
         float inputRX = -gamepad1.right_stick_x; // rotation
 
 
@@ -51,17 +49,19 @@ public class MechanumFieldCentric extends Drive{
         float rightBackPower = rotatedY + rotatedX - inputRX;
 
         // Normalize motor powers if any exceeds 1.0
-        double max = Math.max(1.0, Math.abs(leftFrontPower));
 
 
-        rightBackPower /= (float) max;
+
+
+
 
         // Set motor powers
-//        leftFront.setPower((debug ? leftFrontPower / 4 : leftFrontPower)*LFTUNE.value);
-//        rightFront.setPower((debug ? rightFrontPower / 4 : rightFrontPower)*RFTUNE.value);
-//        leftBack.setPower((debug ? leftBackPower / 4 : leftBackPower)*LBTUNE.value);
-//        rightBack.setPower((debug ? rightBackPower / 4 : rightBackPower)*RBTUNE.value);
-        super.setPowers((debug ? leftBackPower / 4 : leftBackPower)*LBTUNE.value, (debug ? rightBackPower / 4 : rightBackPower)*RBTUNE.value, (debug ? leftFrontPower / 4 : leftFrontPower)*LFTUNE.value, (debug ? rightFrontPower / 4 : rightFrontPower)*RFTUNE.value);
+        leftFront.setPower(debug ? leftFrontPower / 4 : leftFrontPower / 1.5);
+        rightFront.setPower(debug ? rightFrontPower / 4 : rightFrontPower / 1.5);
+        leftBack.setPower(debug ? leftBackPower / 4 : leftBackPower / 1.5);
+        rightBack.setPower(debug ? rightBackPower / 4 : rightBackPower / 1.5);
+
+//        super.setPowers((debug ? leftBackPower / 4 : leftBackPower / 2), (debug ? rightBackPower / 4 : rightBackPower / 2), (debug ? leftFrontPower / 4 : leftFrontPower / 2), (debug ? rightFrontPower / 4 : rightFrontPower / 2));
         if(gamepad1.cross) super.toggleBrake(); //to break
 
 

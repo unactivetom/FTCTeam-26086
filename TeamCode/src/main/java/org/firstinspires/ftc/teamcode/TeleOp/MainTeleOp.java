@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.TeleOp.DECODESEASON.Mechanism;
 @TeleOp(name = "Main", group = "DECODE")
 public class MainTeleOp extends OpMode {
 
-    //private Mechanism mechanism = new Mechanism();
+    private Mechanism mechanism = new Mechanism();
     private MechanumRobotCentric drive;
 
 
@@ -19,7 +19,7 @@ public class MainTeleOp extends OpMode {
 
         telemetry.addData("### INIT ###", "");
         drive.init(hardwareMap);
-        //mechanism.init(hardwareMap);
+        mechanism.init(hardwareMap);
         telemetry.update();
     }
 
@@ -28,7 +28,7 @@ public class MainTeleOp extends OpMode {
         telemetry.addData("### TELEOP ###", "");
         drive.driveLoop(gamepad1);
         telemetry.addData("Brake setting", drive.brake ? "Brake" : "Float");
-        //mechanism.loop(gamepad1);
+        mechanism.loop(gamepad1);
         telemetry.update();
     }
 
