@@ -13,7 +13,7 @@ public class MainAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Shooter shooter = new Shooter(3, 1);
+        Shooter shooter = new Shooter(0, 0.0);
         //DrivePath drive = new DrivePath();
         Tank drive = new Tank();
         shooter.init(hardwareMap);

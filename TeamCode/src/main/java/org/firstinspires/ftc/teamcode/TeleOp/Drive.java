@@ -4,10 +4,13 @@ import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
@@ -19,11 +22,12 @@ public class Drive {
     protected DcMotor leftFront;
     protected DcMotor rightBack;
     protected DcMotor rightFront;
+    protected DistanceSensor distanceSensor;
 
 
     private MainTeleOp main = new MainTeleOp();
     private byte numberOfWheels = 0;
-    private boolean brake = true;
+    public boolean brake = true;
 
 
 
@@ -72,6 +76,7 @@ public class Drive {
                 RevHubOrientationOnRobot.UsbFacingDirection.DOWN
         )
         );
+        //distanceSensor = hardwareMap.get(DistanceSensor.class, "DistanceSensor");
         imu.initialize(imuParameters);
         numberOfWheels = motorCount;
 
@@ -96,6 +101,16 @@ public class Drive {
         leftBack.setPower(leftBackPower);
         rightBack.setPower(rightBackPower);
 
+
+    }
+
+    protected void goToPosDisFromGoal(double distanceCM, double numberOfWheels){
+        double distance = distanceSensor.getDistance(DistanceUnit.CM);
+        double difference = distance - distanceCM;
+        double leftPower = Math.min(difference, .425);
+        leftPower = Math.max(difference, -.425);
+        double rightPower = Math.min(difference, .5);
+        rightPower = Math.min(difference, -.5);
 
     }
 
@@ -131,6 +146,5 @@ public class Drive {
         main.log("Input Right X: ", inputRX);
         main.log("#########END#########");
     }
-
 
 }

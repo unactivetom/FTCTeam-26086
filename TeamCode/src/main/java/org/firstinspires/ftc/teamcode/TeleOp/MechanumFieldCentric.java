@@ -30,8 +30,8 @@ public class MechanumFieldCentric extends Drive{
     public void driveLoop(Gamepad gamepad1) {
         // Get IMU heading in radians
 
-        Orientation angelsDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        Orientation anglesRadians = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
+        Orientation angelsDegree = super.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        Orientation anglesRadians = super.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
         double heading = anglesRadians.firstAngle;
 
         // Get joystick inputs for movement
