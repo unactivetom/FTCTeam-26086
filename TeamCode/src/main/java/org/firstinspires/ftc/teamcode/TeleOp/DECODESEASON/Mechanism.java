@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Mechanism {
 
     DcMotor intake;
-    //DcMotorEx indexer;
     DcMotor shooter;
     DcMotor upperThroughPut;
 
@@ -23,17 +22,15 @@ public class Mechanism {
 
     public void init(HardwareMap hardwareMap){
         intake = hardwareMap.get(DcMotor.class, "intake");
-//        indexer = hardwareMap.get(DcMotorEx.class, "indexer");
         shooter = hardwareMap.get(DcMotor.class, "shooter");
         upperThroughPut = hardwareMap.get(DcMotor.class, "upperThroughPut");
 
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         upperThroughPut.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        //indexer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         shooter.setDirection(DcMotorSimple.Direction.REVERSE);
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
 
     }
 
@@ -54,7 +51,14 @@ public class Mechanism {
             upperThroughPut(true);
         if(gamepad.crossWasReleased())
             upperThroughPut(false);
-
+//        if(gamepad.right_trigger > 0.5f){
+//            shooter(true);
+//            upperThroughPut(true);
+//        }
+//        if(gamepad.right_trigger < 0.5f){
+//            shooter(false);
+//            upperThroughPut(false);
+//        }
 
     }
 
@@ -69,7 +73,7 @@ public class Mechanism {
     }
 
     private void upperThroughPut(boolean value){
-        upperThroughPut.setPower(value ? 1 : 0);
+        upperThroughPut.setPower(value ? -1 : 0);
     }
 
 

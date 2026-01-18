@@ -39,7 +39,7 @@ public class MechanumRobotCentric extends Drive{
         float inputLY = -gamepad1.left_stick_y; // forward/back
         float inputLX = gamepad1.left_stick_x; // strafe, with slight adjustment
         float inputRX = gamepad1.right_stick_x; // rotation
-
+        float inputRY = -gamepad1.right_stick_y; // fast forward
 
         // Calculate motor powers for mecanum drive
         leftFrontPower = inputLY + inputLX + inputRX;
@@ -47,14 +47,21 @@ public class MechanumRobotCentric extends Drive{
         leftBackPower = inputLY - inputLX + inputRX;
         rightBackPower = inputLY + inputLX - inputRX;
 
-        // Normalize motor powers if any exceeds 1.0
 
 
         // Set motor powers
-        leftFront.setPower(debug ? leftFrontPower / 4 : leftFrontPower / 2);
-        rightFront.setPower(debug ? rightFrontPower / 4 : rightFrontPower / 2);
-        leftBack.setPower(debug ? leftBackPower / 4 : leftBackPower / 2);
-        rightBack.setPower(debug ? rightBackPower / 4 : rightBackPower / 2);
+        leftFront.setPower(debug ? leftFrontPower / 2.5 : leftFrontPower / 1.5);
+        rightFront.setPower(debug ? rightFrontPower / 2.5 : rightFrontPower / 1.5);
+        leftBack.setPower(debug ? leftBackPower / 2.5 : leftBackPower / 1.5);
+        rightBack.setPower(debug ? rightBackPower / 2.5 : rightBackPower / 1.5);
+
+        if(inputRY > 0.5 || inputRY < -0.5){
+            leftFront.setPower(inputRY);
+            rightFront.setPower(inputRY);
+            leftBack.setPower(inputRY);
+            rightBack.setPower(inputRY);
+        }
+
 
         if(gamepad1.cross) super.toggleBrake(); //to break
 

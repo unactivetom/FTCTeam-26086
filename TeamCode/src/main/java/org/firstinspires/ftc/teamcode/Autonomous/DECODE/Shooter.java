@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode.Autonomous.DECODE;
 
 import com.acmerobotics.roadrunner.InstantFunction;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Shooter implements InstantFunction {
 
     DcMotor shooter;
     DcMotor intake;
-    //DcMotor pusher;
+    DcMotor upperThroughPut;
 
 
 
@@ -23,16 +24,16 @@ public class Shooter implements InstantFunction {
     public void run() {
         shooterSet(this.motorPower);
         try {
-            Thread.sleep(100);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);}
         intakeOn(true);
-        //pusherOn(true);
+        upperThroughPut(true);
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);}
-        //pusherOn(false);
+        upperThroughPut(false);
         shooterSet(0);
         intakeOn(false);
     }
@@ -41,19 +42,24 @@ public class Shooter implements InstantFunction {
     public void init(HardwareMap hardwareMap){
         shooter = hardwareMap.get(DcMotor.class, "shooter");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        //pusher = hardwareMap.get(DcMotor.class, "pusher");
+        upperThroughPut = hardwareMap.get(DcMotor.class, "upperThroughPut");
+
+        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        upperThroughPut.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
     }
     public void intakeOn(boolean value){
-        intake.setPower(value? .5:0);
+        intake.setPower(value? 1.0 : 0.0);
     }
 
     public void shooterSet(double value){
         shooter.setPower(value);
     }
 
-//    public void pusherOn(boolean value){
-//        pusher.setPower(value? .2:0);
-//    }
+    public void upperThroughPut(boolean value){
+        upperThroughPut.setPower(value? -1.0 : 0.0);
+    }
 
 }

@@ -1,30 +1,27 @@
 package org.firstinspires.ftc.teamcode.Autonomous.DECODE;
 
 
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-@Autonomous(name = "DECODEMain", group = "DECODE")
-public class MainAuto extends LinearOpMode {
+@Autonomous(name = "DECODE RED", group = "DECODE")
+public class DecodeRed extends LinearOpMode {
 
 
     @Override
     public void runOpMode() {
-        Shooter shooter = new Shooter(0, 0.0);
+        Shooter firstShooter = new Shooter(3, 1.0);
         //DrivePath drive = new DrivePath();
-        Tank drive = new Tank();
-        shooter.init(hardwareMap);
+        Mechanum drive = new Mechanum();
+        firstShooter.init(hardwareMap);
         drive.init(hardwareMap);
 
         waitForStart();
 
-        drive.driveOn();
-        sleep(1000);
-        drive.driveOff();
-        shooter.run();
+        drive.forward(-20, -0.5);
+        firstShooter.run();
+        drive.left(-20, -0.5);
 
 
         //shooter.intakeOn(true);
