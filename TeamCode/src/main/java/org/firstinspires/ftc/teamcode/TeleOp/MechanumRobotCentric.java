@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -13,10 +14,12 @@ public class MechanumRobotCentric extends Drive{
     private boolean debug;
 
 
-    private float leftFrontPower;
-    private float rightFrontPower;
-    private float leftBackPower;
-    private float rightBackPower;
+    private double leftFrontPower;
+    private double rightFrontPower;
+    private double leftBackPower;
+    private double rightBackPower;
+
+    private double speedModifier = 1;
 
 
     public MechanumRobotCentric(boolean debugMode){
@@ -29,17 +32,18 @@ public class MechanumRobotCentric extends Drive{
         super.setBrake(true);
     }
 
-    public void driveLoop(Gamepad gamepad1) {
+    public void driveLoop(Gamepad gamepad1, Telemetry telemetry) {
         // Get IMU heading in radians
 
+        if(gamepad1.dpadUpWasPressed() && speedModifier < 1) speedModifier++;
+        if(gamepad1.dpadDownWasPressed() && speedModifier > -1) speedModifier--;
 
         Orientation anglesDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         // Get joystick inputs for movement
-        float inputLY = -gamepad1.left_stick_y; // forward/back
-        float inputLX = gamepad1.left_stick_x; // strafe, with slight adjustment
-        float inputRX = gamepad1.right_stick_x; // rotation
-        float inputRY = -gamepad1.right_stick_y; // fast forward
+        double inputLY = -gamepad1.left_stick_y; // forward/back
+        double inputLX = gamepad1.left_stick_x; // strafe, with slight adjustment
+        double inputRX = gamepad1.right_stick_x; // rotation
 
         // Calculate motor powers for mecanum drive
         leftFrontPower = inputLY + inputLX + inputRX;
@@ -47,27 +51,36 @@ public class MechanumRobotCentric extends Drive{
         leftBackPower = inputLY - inputLX + inputRX;
         rightBackPower = inputLY + inputLX - inputRX;
 
+        double max = Math.abs(leftFrontPower);
+        max = Math.max(max, Math.abs(rightFrontPower));
+        max = Math.max(max, Math.abs(leftBackPower));
+        max = Math.max(max, Math.abs(rightBackPower));
 
+        if(max > 1) {
+            leftFrontPower /= max;
+            rightFrontPower /= max;
+            leftBackPower /= max;
+            rightBackPower /= max;
+        }
 
         // Set motor powers
-        leftFront.setPower(debug ? leftFrontPower / 2.5 : leftFrontPower / 1.5);
-        rightFront.setPower(debug ? rightFrontPower / 2.5 : rightFrontPower / 1.5);
-        leftBack.setPower(debug ? leftBackPower / 2.5 : leftBackPower / 1.5);
-        rightBack.setPower(debug ? rightBackPower / 2.5 : rightBackPower / 1.5);
-
-        if(inputRY > 0.5 || inputRY < -0.5){
-            leftFront.setPower(inputRY);
-            rightFront.setPower(inputRY);
-            leftBack.setPower(inputRY);
-            rightBack.setPower(inputRY);
-        }
+        leftFront.setPower(leftFrontPower * speedModifier);
+        rightFront.setPower(rightFrontPower * speedModifier);
+        leftBack.setPower(leftBackPower * speedModifier);
+        rightBack.setPower(rightBackPower * speedModifier);
 
 
         if(gamepad1.cross) super.toggleBrake(); //to break
 
+        telemetry.addLine("Motor telemetry");
+        telemetry.addData("leftFront power: ", leftFrontPower);
+        telemetry.addData("rightFront power: ", rightFrontPower);
+        telemetry.addData("leftBack power: ", leftBackPower);
+        telemetry.addData("rightBack power: ", rightBackPower);
+        telemetry.addData("Modifier: ", speedModifier);
+        telemetry.addData("Yaw: ", anglesDegree.firstAngle);
 
-        //debugger:
-        if (debug) super.Logger(leftFrontPower,rightFrontPower,leftBackPower,rightBackPower,anglesDegree,inputLX,inputLY,inputRX);
+
     }
 
 }

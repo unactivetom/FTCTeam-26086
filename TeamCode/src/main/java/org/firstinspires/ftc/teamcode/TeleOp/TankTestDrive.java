@@ -36,7 +36,7 @@ public class TankTestDrive extends OpMode {
         telemetry.addData("TELEOP", "");
         telemetry.addData("time: ", getRuntime());
         driveLoop(gamepad1);
-        mechanism.loop(gamepad1);
+        mechanism.loop(gamepad1, telemetry);
 
         telemetry.update();
     }

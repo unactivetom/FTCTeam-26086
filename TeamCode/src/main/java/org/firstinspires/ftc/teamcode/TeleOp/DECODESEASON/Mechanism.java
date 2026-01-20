@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Mechanism {
 
     DcMotor intake;
@@ -34,31 +36,26 @@ public class Mechanism {
 
     }
 
-    public void loop(Gamepad gamepad){
-        if(gamepad.right_bumper)
+    public void loop(Gamepad gamepad, Telemetry telemetry){
+        if(gamepad.rightBumperWasPressed())
             intake(true, true);
         if(gamepad.rightBumperWasReleased())
             intake(false, true);
-        if(gamepad.left_bumper)
+        if(gamepad.leftBumperWasPressed())
             shooter(true);
         if(gamepad.leftBumperWasReleased())
             shooter(false);
-        if(gamepad.circle)
+        if(gamepad.circleWasPressed())
             intake(true, false);
         if(gamepad.circleWasReleased())
             intake(false, false);
-        if(gamepad.cross)
+        if(gamepad.crossWasPressed())
             upperThroughPut(true);
         if(gamepad.crossWasReleased())
             upperThroughPut(false);
-//        if(gamepad.right_trigger > 0.5f){
-//            shooter(true);
-//            upperThroughPut(true);
-//        }
-//        if(gamepad.right_trigger < 0.5f){
-//            shooter(false);
-//            upperThroughPut(false);
-//        }
+
+
+
 
     }
 
