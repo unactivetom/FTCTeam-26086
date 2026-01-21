@@ -5,7 +5,6 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.TeleOp.DECODESEASON.Mechanism;
 
 //Go to 192.168.49.1:8080/dash for other and 192.168.43.1:8080/dash for control hub
@@ -16,20 +15,22 @@ public class MainTeleOp extends OpMode {
 
     private Mechanism mechanism = new Mechanism();
     private MechanumRobotCentric drive;
-    private FtcDashboard dashboard = FtcDashboard.getInstance();
-    public TelemetryPacket packet = new TelemetryPacket();
+    public FtcDashboard dashboard = FtcDashboard.getInstance();
 
+
+    public TelemetryPacket motorPacket = new TelemetryPacket();
+    public TelemetryPacket mainPacket = new TelemetryPacket();
 
 
     @Override
     public void init(){
         drive = new MechanumRobotCentric(false);
-        packet.addLine("INIT");
+        mainPacket.addLine("INIT");
         telemetry.addLine("### INIT ###");
         drive.init(hardwareMap);
         mechanism.init(hardwareMap);
         telemetry.update();
-        dashboard.sendTelemetryPacket(packet);
+        dashboard.sendTelemetryPacket(mainPacket);
     }
 
     @Override
@@ -39,8 +40,10 @@ public class MainTeleOp extends OpMode {
         telemetry.addData("Brake setting", drive.brake ? "Brake" : "Float");
         mechanism.loop(gamepad1, telemetry);
         telemetry.update();
-        dashboard.sendTelemetryPacket(packet);
+        mainPacket.put("battery: ", hardwareMap.voltageSensor.get("Control Hub").getVoltage());
+        dashboard.sendTelemetryPacket(mainPacket);
     }
+
 
 
 

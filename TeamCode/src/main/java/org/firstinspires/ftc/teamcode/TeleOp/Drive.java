@@ -1,18 +1,14 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
 public class Drive {
 
@@ -28,8 +24,6 @@ public class Drive {
     private MainTeleOp main = new MainTeleOp();
     private byte numberOfWheels = 0;
     public boolean brake = true;
-
-
 
 
 
@@ -90,6 +84,9 @@ public class Drive {
             rightFront = hardwareMap.get(DcMotor.class, "RightFront");
             rightFront.setDirection(DcMotor.Direction.REVERSE);
         }
+
+        main.motorPacket.addTimestamp();
+        main.motorPacket.addLine("Drive init ready");
     }
 
     protected void setPowers(double leftBackPower, double rightBackPower, double leftFrontPower, double rightFrontPower){

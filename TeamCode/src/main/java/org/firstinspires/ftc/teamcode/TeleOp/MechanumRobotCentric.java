@@ -20,6 +20,8 @@ public class MechanumRobotCentric extends Drive{
     private double rightBackPower;
 
     private double speedModifier = 1;
+    MainTeleOp mainTeleOp = new MainTeleOp();
+
 
 
     public MechanumRobotCentric(boolean debugMode){
@@ -35,8 +37,8 @@ public class MechanumRobotCentric extends Drive{
     public void driveLoop(Gamepad gamepad1, Telemetry telemetry) {
         // Get IMU heading in radians
 
-        if(gamepad1.dpadUpWasPressed() && speedModifier < 1) speedModifier++;
-        if(gamepad1.dpadDownWasPressed() && speedModifier > -1) speedModifier--;
+        if(gamepad1.dpadUpWasPressed() && speedModifier < 1) speedModifier += 0.1;
+        if(gamepad1.dpadDownWasPressed() && speedModifier > -1) speedModifier -= 0.1;
 
         Orientation anglesDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
@@ -66,19 +68,30 @@ public class MechanumRobotCentric extends Drive{
         // Set motor powers
         leftFront.setPower(leftFrontPower * speedModifier);
         rightFront.setPower(rightFrontPower * speedModifier);
-        leftBack.setPower(leftBackPower * speedModifier);
+        leftBack.setPower((leftBackPower * speedModifier)/1.5);
         rightBack.setPower(rightBackPower * speedModifier);
 
 
         if(gamepad1.cross) super.toggleBrake(); //to break
 
         telemetry.addLine("Motor telemetry");
+        mainTeleOp.motorPacket.addTimestamp();
+        mainTeleOp.motorPacket.addLine("Motor Telemetry: ");
         telemetry.addData("leftFront power: ", leftFrontPower);
+        mainTeleOp.motorPacket.put("leftFront power:", leftFrontPower);
         telemetry.addData("rightFront power: ", rightFrontPower);
+        mainTeleOp.motorPacket.put("rightFront power:", rightFrontPower);
         telemetry.addData("leftBack power: ", leftBackPower);
+        mainTeleOp.motorPacket.put("leftBack power:", leftBackPower);
         telemetry.addData("rightBack power: ", rightBackPower);
+        mainTeleOp.motorPacket.put("rightBack power:", rightBackPower);
         telemetry.addData("Modifier: ", speedModifier);
+        mainTeleOp.motorPacket.put("Modifier:", speedModifier);
         telemetry.addData("Yaw: ", anglesDegree.firstAngle);
+        mainTeleOp.motorPacket.put("Yaw:", anglesDegree.firstAngle);
+
+        mainTeleOp.dashboard.sendTelemetryPacket(mainTeleOp.motorPacket);
+
 
 
     }
