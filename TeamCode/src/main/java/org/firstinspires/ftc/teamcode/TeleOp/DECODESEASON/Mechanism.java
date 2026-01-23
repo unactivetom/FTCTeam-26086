@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.TeleOp.MainTeleOp;
 
 public class Mechanism {
 
@@ -15,14 +16,16 @@ public class Mechanism {
 
     int intakeSpeed = 288*2;  //in ticks per sec, 288 is one rotation
     int indexerSpeed = 288*2;  //in ticks per sec, 288 is one rotation
-    int shooterSpeed = 2800;  //in ticks per sec, 28 is one rotation
+    double shooterPower = 0.7;  //in ticks per sec, 28 is one rotation
 
+    MainTeleOp main;
 
     public Mechanism(){
 
     }
 
     public void init(HardwareMap hardwareMap){
+        main = new MainTeleOp();
         intake = hardwareMap.get(DcMotor.class, "intake");
         shooter = hardwareMap.get(DcMotor.class, "shooter");
         upperThroughPut = hardwareMap.get(DcMotor.class, "upperThroughPut");
@@ -53,8 +56,13 @@ public class Mechanism {
             upperThroughPut(true);
         if(gamepad.crossWasReleased())
             upperThroughPut(false);
+        if(gamepad.dpadLeftWasPressed() && shooterPower > 0.1)
+            shooterPower -= 0.1;
+        if(gamepad.dpadRightWasPressed() && shooterPower < 1.0)
+            shooterPower += 0.1;
 
-
+        telemetry.addData("shooterPower: ", shooterPower);
+        main.mainPacket.put("shooter Power: ", shooterPower);
 
 
     }
@@ -65,8 +73,8 @@ public class Mechanism {
     }
 
 
-    private void shooter(boolean value){
-        shooter.setPower(value ? 1 : 0);
+    private void shooter(boolean value) {
+        shooter.setPower(value ? shooterPower : 0);
     }
 
     private void upperThroughPut(boolean value){
@@ -84,8 +92,7 @@ public class Mechanism {
     }
 
 
-    public void setShooterSpeed(int shooterSpeed) {
-        this.shooterSpeed = shooterSpeed;
-    }
+
+
 
 }

@@ -20,7 +20,7 @@ public class MechanumRobotCentric extends Drive{
     private double rightBackPower;
 
     private double speedModifier = 1;
-    MainTeleOp mainTeleOp = new MainTeleOp();
+
 
 
 
@@ -65,32 +65,35 @@ public class MechanumRobotCentric extends Drive{
             rightBackPower /= max;
         }
 
+        double leftBackTuner = 1.3;
+
+
         // Set motor powers
         leftFront.setPower(leftFrontPower * speedModifier);
         rightFront.setPower(rightFrontPower * speedModifier);
-        leftBack.setPower((leftBackPower * speedModifier)/1.5);
+        leftBack.setPower((leftBackPower * speedModifier)/leftBackTuner);
         rightBack.setPower(rightBackPower * speedModifier);
 
 
         if(gamepad1.cross) super.toggleBrake(); //to break
 
         telemetry.addLine("Motor telemetry");
-        mainTeleOp.motorPacket.addTimestamp();
-        mainTeleOp.motorPacket.addLine("Motor Telemetry: ");
-        telemetry.addData("leftFront power: ", leftFrontPower);
-        mainTeleOp.motorPacket.put("leftFront power:", leftFrontPower);
-        telemetry.addData("rightFront power: ", rightFrontPower);
-        mainTeleOp.motorPacket.put("rightFront power:", rightFrontPower);
-        telemetry.addData("leftBack power: ", leftBackPower);
-        mainTeleOp.motorPacket.put("leftBack power:", leftBackPower);
-        telemetry.addData("rightBack power: ", rightBackPower);
-        mainTeleOp.motorPacket.put("rightBack power:", rightBackPower);
+        super.main.motorPacket.addTimestamp();
+        super.main.motorPacket.addLine("Motor Telemetry: ");
+//        telemetry.addData("leftFront power: ", leftFrontPower);
+        super.main.motorPacket.put("leftFront power:", leftFrontPower);
+//        telemetry.addData("rightFront power: ", rightFrontPower);
+        super.main.motorPacket.put("rightFront power:", rightFrontPower);
+//        telemetry.addData("leftBack power: ", leftBackPower);
+        super.main.motorPacket.put("leftBack power:", leftBackPower);
+//        telemetry.addData("rightBack power: ", rightBackPower);
+        super.main.motorPacket.put("rightBack power:", rightBackPower);
         telemetry.addData("Modifier: ", speedModifier);
-        mainTeleOp.motorPacket.put("Modifier:", speedModifier);
-        telemetry.addData("Yaw: ", anglesDegree.firstAngle);
-        mainTeleOp.motorPacket.put("Yaw:", anglesDegree.firstAngle);
+        super.main.motorPacket.put("Modifier:", speedModifier);
+//        telemetry.addData("Yaw: ", anglesDegree.firstAngle);
+        super.main.motorPacket.put("Yaw:", anglesDegree.firstAngle);
 
-        mainTeleOp.dashboard.sendTelemetryPacket(mainTeleOp.motorPacket);
+        super.main.dashboard.sendTelemetryPacket(super.main.motorPacket);
 
 
 

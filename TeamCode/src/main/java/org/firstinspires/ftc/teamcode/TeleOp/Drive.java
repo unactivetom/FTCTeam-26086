@@ -21,7 +21,7 @@ public class Drive {
     protected DistanceSensor distanceSensor;
 
 
-    private MainTeleOp main = new MainTeleOp();
+    protected MainTeleOp main;
     private byte numberOfWheels = 0;
     public boolean brake = true;
 
@@ -36,7 +36,7 @@ public class Drive {
         this.brake = value;
         //switching between floating break and break break.
         if(this.brake){
-            main.log("Brake setting: Brake");
+            //main.log("Brake setting: Brake");
             if(numberOfWheels == 4){
                 leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -44,7 +44,7 @@ public class Drive {
             leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }else{
-            main.log("Brake setting: Float");
+            //main.log("Brake setting: Float");
             if(numberOfWheels == 4){
                 leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -64,6 +64,7 @@ public class Drive {
     }
 
     protected void initializer(byte motorCount, HardwareMap hardwareMap){
+        main = new MainTeleOp();
         imu = hardwareMap.get(BHI260IMU.class, "imu");
         imuParameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
@@ -85,8 +86,8 @@ public class Drive {
             rightFront.setDirection(DcMotor.Direction.REVERSE);
         }
 
-        main.motorPacket.addTimestamp();
-        main.motorPacket.addLine("Drive init ready");
+        //main.motorPacket.addTimestamp();
+        //main.motorPacket.addLine("Drive init ready");
     }
 
     protected void setPowers(double leftBackPower, double rightBackPower, double leftFrontPower, double rightFrontPower){
