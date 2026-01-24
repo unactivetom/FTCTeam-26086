@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -28,7 +29,7 @@ public class Drive {
 
 
 
-    protected Drive(){
+    public Drive(){
 
     }
 
@@ -63,7 +64,7 @@ public class Drive {
         return brake;
     }
 
-    protected void initializer(byte motorCount, HardwareMap hardwareMap){
+    public void initializer(byte motorCount, HardwareMap hardwareMap){
         main = new MainTeleOp();
         imu = hardwareMap.get(BHI260IMU.class, "imu");
         imuParameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -90,27 +91,25 @@ public class Drive {
         //main.motorPacket.addLine("Drive init ready");
     }
 
-    protected void setPowers(double leftBackPower, double rightBackPower, double leftFrontPower, double rightFrontPower){
-        if(numberOfWheels == 4){
-            leftFront.setPower(leftFrontPower);
-            rightFront.setPower(rightFrontPower);
-        }
+    public void setPowers(double leftBackPower, double rightBackPower, double leftFrontPower, double rightFrontPower){
 
+        leftFront.setPower(leftFrontPower);
+        rightFront.setPower(rightFrontPower);
         leftBack.setPower(leftBackPower);
         rightBack.setPower(rightBackPower);
 
 
     }
 
-    protected void goToPosDisFromGoal(double distanceCM, double numberOfWheels){
-        double distance = distanceSensor.getDistance(DistanceUnit.CM);
-        double difference = distance - distanceCM;
-        double leftPower = Math.min(difference, .425);
-        leftPower = Math.max(difference, -.425);
-        double rightPower = Math.min(difference, .5);
-        rightPower = Math.min(difference, -.5);
-
-    }
+//    protected void goToPosDisFromGoal(double distanceCM, double numberOfWheels){
+//        double distance = distanceSensor.getDistance(DistanceUnit.CM);
+//        double difference = distance - distanceCM;
+//        double leftPower = Math.min(difference, .425);
+//        leftPower = Math.max(difference, -.425);
+//        double rightPower = Math.min(difference, .5);
+//        rightPower = Math.min(difference, -.5);
+//
+//    }
 
     protected void Logger(float leftFrontPower, float rightFrontPower, float leftBackPower, float rightBackPower, Orientation angles, float inputLX, float inputLY, float inputRX){
         main.log();
