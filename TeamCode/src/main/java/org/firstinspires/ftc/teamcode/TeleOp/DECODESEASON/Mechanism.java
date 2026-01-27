@@ -16,9 +16,10 @@ import java.util.HashMap;
 
 public class Mechanism {
 
-    DcMotor intake;
+    DcMotor lowerThroughPut;
     DcMotor shooter;
     DcMotor upperThroughPut;
+    DcMotor intake;
     DistanceSensor distanceSensor;
     Drive drive = new Drive();
 
@@ -36,19 +37,21 @@ public class Mechanism {
 
     public void init(HardwareMap hardwareMap){
         main = new MainTeleOp();
-        intake = hardwareMap.get(DcMotor.class, "intake");
+        lowerThroughPut = hardwareMap.get(DcMotor.class, "lowerThroughPut");
         shooter = hardwareMap.get(DcMotor.class, "shooter");
         upperThroughPut = hardwareMap.get(DcMotor.class, "upperThroughPut");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distance");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+
         drive.initializer((byte) 4, hardwareMap);
 
 
-        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lowerThroughPut.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         upperThroughPut.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         shooter.setDirection(DcMotorSimple.Direction.REVERSE);
-        intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        lowerThroughPut.setDirection(DcMotorSimple.Direction.FORWARD);
 
         speedMap.put(35, 0.6);
         speedMap.put(50, 0.65);
@@ -59,18 +62,26 @@ public class Mechanism {
     }
 
     public void loop(Gamepad gamepad, Telemetry telemetry){
-        if(gamepad.rightBumperWasPressed())
+        if(gamepad.rightBumperWasPressed()) {
+            lowerThroughPut(true, true);
             intake(true, true);
-        if(gamepad.rightBumperWasReleased())
+        }
+        if(gamepad.rightBumperWasReleased()) {
+            lowerThroughPut(false, true);
             intake(false, true);
+        }
         if(gamepad.leftBumperWasPressed())
             shooter(true);
         if(gamepad.leftBumperWasReleased())
             shooter(false);
-        if(gamepad.circleWasPressed())
+        if(gamepad.circleWasPressed()) {
+            lowerThroughPut(true, false);
             intake(true, false);
-        if(gamepad.circleWasReleased())
+        }
+        if(gamepad.circleWasReleased()) {
+            lowerThroughPut(false, false);
             intake(false, false);
+        }
         if(gamepad.crossWasPressed())
             upperThroughPut(true);
         if(gamepad.crossWasReleased())
@@ -87,6 +98,11 @@ public class Mechanism {
         main.mainPacket.put("shooter Power: ", shooterPower);
 
 
+    }
+
+    private void lowerThroughPut(boolean value, boolean forward){
+        double direction = forward ? 1 : -1;
+        lowerThroughPut.setPower(value ? direction : 0);
     }
 
     private void intake(boolean value, boolean forward){
@@ -141,6 +157,7 @@ public class Mechanism {
 
 
     }
+
 
 
 
