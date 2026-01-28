@@ -91,7 +91,8 @@ public class Mechanism {
         if(gamepad.dpadRightWasPressed() && shooterPower < 0.95)
             shooterPower += 0.05;
         if(gamepad.triangleWasPressed())
-            autoPosition();
+            autoPosition(); //gamepad.rumble(500);
+
 
         telemetry.addData("shooterPower: ", shooterPower);
         telemetry.addData("Distance: ", distanceSensor.getDistance(DistanceUnit.CM));
@@ -101,13 +102,11 @@ public class Mechanism {
     }
 
     private void lowerThroughPut(boolean value, boolean forward){
-        double direction = forward ? 1 : -1;
-        lowerThroughPut.setPower(value ? direction : 0);
+        lowerThroughPut.setPower(value ? forward ? 1 : -1 : 0);
     }
 
     private void intake(boolean value, boolean forward){
-        double direction = forward ? 1 : -1;
-        intake.setPower(value ? direction : 0);
+        intake.setPower(value ? forward ? 1 : -1 : 0);
     }
 
 
@@ -148,6 +147,10 @@ public class Mechanism {
                 shooterPower = speedMap.get(dist);
                 while(Math.abs(dist - distanceSensor.getDistance(DistanceUnit.CM)) > 2){
                     double speed = Range.clip(distanceSensor.getDistance(DistanceUnit.CM) - dist, -0.3, 0.3);
+                    drive.setPowers(speed,speed,speed,speed);
+                }
+                while(Math.abs(dist - distanceSensor.getDistance(DistanceUnit.CM)) > 2){
+                    double speed = Range.clip(distanceSensor.getDistance(DistanceUnit.CM) - dist, -0.2, 0.2);
                     drive.setPowers(speed,speed,speed,speed);
                 }
                 drive.setPowers(0,0,0,0);

@@ -36,6 +36,9 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop(){
         telemetry.addData("### TELEOP ###", "");
+        if(gamepad1.share){
+            gamepad1.rumble(10);
+        }
         drive.driveLoop(gamepad1, telemetry);
         telemetry.addData("Brake setting", drive.brake ? "Brake" : "Float");
         mechanism.loop(gamepad1, telemetry);

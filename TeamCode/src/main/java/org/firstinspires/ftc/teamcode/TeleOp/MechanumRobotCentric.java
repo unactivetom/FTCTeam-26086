@@ -19,7 +19,7 @@ public class MechanumRobotCentric extends Drive{
     private double leftBackPower;
     private double rightBackPower;
 
-    private double speedModifier = 1;
+    private double speedModifier = 0.8;
 
 
 
@@ -66,7 +66,6 @@ public class MechanumRobotCentric extends Drive{
         }
 
         double leftBackTuner = 1.3;
-
 
         // Set motor powers
         leftFront.setPower(leftFrontPower * speedModifier);
