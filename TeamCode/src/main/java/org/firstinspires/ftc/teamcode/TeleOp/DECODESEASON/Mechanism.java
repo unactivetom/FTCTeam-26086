@@ -54,9 +54,9 @@ public class Mechanism {
         lowerThroughPut.setDirection(DcMotorSimple.Direction.FORWARD);
 
         speedMap.put(35, 0.6);
-        speedMap.put(50, 0.65);
-        speedMap.put(75, 0.7);
-        speedMap.put(100, 0.75);
+        speedMap.put(50, 0.6);
+        speedMap.put(75, 0.6);
+        speedMap.put(100, 0.65);
 
 
     }
@@ -101,6 +101,10 @@ public class Mechanism {
 
     }
 
+//    public void intakeOn(boolean value){
+//        intake(value, true);
+//    }
+
     private void lowerThroughPut(boolean value, boolean forward){
         lowerThroughPut.setPower(value ? forward ? 1 : -1 : 0);
     }
@@ -115,7 +119,7 @@ public class Mechanism {
     }
 
     private void upperThroughPut(boolean value){
-        upperThroughPut.setPower(value ? -1 : 0);
+        upperThroughPut.setPower(value ? 0.7 : 0);
     }
 
 

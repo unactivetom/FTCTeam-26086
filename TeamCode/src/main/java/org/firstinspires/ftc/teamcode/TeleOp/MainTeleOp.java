@@ -36,6 +36,7 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop(){
         telemetry.addData("### TELEOP ###", "");
+        //mechanism.intakeOn(true);
         if(gamepad1.share){
             gamepad1.rumble(10);
         }
@@ -45,6 +46,7 @@ public class MainTeleOp extends OpMode {
         telemetry.update();
         mainPacket.put("battery: ", hardwareMap.voltageSensor.get("Control Hub").getVoltage());
         dashboard.sendTelemetryPacket(mainPacket);
+
     }
 
 

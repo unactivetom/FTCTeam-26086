@@ -19,7 +19,7 @@ public class MechanumRobotCentric extends Drive{
     private double leftBackPower;
     private double rightBackPower;
 
-    private double speedModifier = 0.8;
+    private double speedModifier = 0.9;
 
 
 
@@ -37,8 +37,8 @@ public class MechanumRobotCentric extends Drive{
     public void driveLoop(Gamepad gamepad1, Telemetry telemetry) {
         // Get IMU heading in radians
 
-        if(gamepad1.dpadUpWasPressed() && speedModifier < 1) speedModifier += 0.1;
-        if(gamepad1.dpadDownWasPressed() && speedModifier > -1) speedModifier -= 0.1;
+        if(gamepad1.dpadUpWasPressed() && speedModifier < 1) speedModifier = 0.3;
+        if(gamepad1.dpadDownWasPressed() && speedModifier > 0) speedModifier = 0.9;
 
         Orientation anglesDegree = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
@@ -70,15 +70,14 @@ public class MechanumRobotCentric extends Drive{
         // Set motor powers
         leftFront.setPower(leftFrontPower * speedModifier);
         rightFront.setPower(rightFrontPower * speedModifier);
-        leftBack.setPower((leftBackPower * speedModifier)/leftBackTuner);
+        leftBack.setPower((leftBackPower/leftBackTuner)*speedModifier);
         rightBack.setPower(rightBackPower * speedModifier);
 
 
         if(gamepad1.cross) super.toggleBrake(); //to break
 
         telemetry.addLine("Motor telemetry");
-        super.main.motorPacket.addTimestamp();
-        super.main.motorPacket.addLine("Motor Telemetry: ");
+        super.main.motorPacket.put("Motor Telemetry: ", "");
 //        telemetry.addData("leftFront power: ", leftFrontPower);
         super.main.motorPacket.put("leftFront power:", leftFrontPower);
 //        telemetry.addData("rightFront power: ", rightFrontPower);

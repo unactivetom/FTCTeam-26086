@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous.DECODE;
 
-import com.acmerobotics.roadrunner.InstantFunction;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Shooter implements InstantFunction {
+public class Shooter {
 
     DcMotor shooter;
     DcMotor intake;
@@ -13,24 +13,24 @@ public class Shooter implements InstantFunction {
 
 
 
-    int numberBalls = 0;
-    double motorPower = 0;
+    int numberBalls;
+    double motorPower;
     public Shooter(int number, double power){
         this.numberBalls = number;
         this.motorPower = power;
     }
 
-    @Override
+
     public void run() {
         shooterSet(this.motorPower);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);}
         intakeOn(true);
         upperThroughPut(true);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);}
         upperThroughPut(false);
@@ -59,7 +59,7 @@ public class Shooter implements InstantFunction {
     }
 
     public void upperThroughPut(boolean value){
-        upperThroughPut.setPower(value? -1.0 : 0.0);
+        upperThroughPut.setPower(value? 0.7 : 0.0);
     }
 
 }

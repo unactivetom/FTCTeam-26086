@@ -19,7 +19,7 @@ public class DecodeForward extends LinearOpMode {
 
         waitForStart();
 
-        drive.forward(20, 0.5);
+        drive.forward(50, 0.5, telemetry);
         //firstShooter.run();
 
 

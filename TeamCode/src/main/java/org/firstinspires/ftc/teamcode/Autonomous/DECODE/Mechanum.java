@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.Autonomous.DECODE;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.apache.commons.math3.analysis.integration.IterativeLegendreGaussIntegrator;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Mechanum {
 
@@ -13,13 +17,14 @@ public class Mechanum {
     public int programCount = 0;
 
     public void init(HardwareMap hardwareMap){
-        leftFront = hardwareMap.get(DcMotor.class, "LeftFront");
-        rightFront = hardwareMap.get(DcMotor.class, "RightFront");
-        leftBack = hardwareMap.get(DcMotor.class, "LeftBack");
-        rightBack = hardwareMap.get(DcMotor.class, "RightBack");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
 
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -28,7 +33,7 @@ public class Mechanum {
 
     }
 
-    public void forward(double distance, double power){
+    public void forward(double distance, double power, Telemetry telemetry){
         programCount++;
         //Set to not running for setting the target position
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -39,13 +44,15 @@ public class Mechanum {
         //set the power
         leftFront.setPower(power);
         rightFront.setPower(power);
-        leftBack.setPower(power);
+        leftBack.setPower(power/1.3);
         rightBack.setPower(power);
+
+        telemetry.addData("leftBack: ", leftBack.getPower());
 
         //set target pos
         leftFront.setTargetPosition((int) (distance * 47.534)/2);
         rightFront.setTargetPosition((int) (distance * 47.534)/2);
-        leftBack.setTargetPosition((int) (distance * 47.534)/2);
+        leftBack.setTargetPosition((int) (((int) (distance * 47.534))/1.3));
         rightBack.setTargetPosition((int) (distance * 47.534)/2);
 
         //run to target pos
@@ -60,7 +67,7 @@ public class Mechanum {
 
     }
 
-    public void left(double distance, double power){
+    public void left(double distance, double power, Telemetry telemetry){
         programCount++;
 
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -71,13 +78,15 @@ public class Mechanum {
         //set the power
         leftFront.setPower(-power);
         rightFront.setPower(power);
-        leftBack.setPower(power);
+        leftBack.setPower(power/1.3);
         rightBack.setPower(-power);
+
+        telemetry.addData("leftBack: ", leftBack.getPower());
 
         //set target pos
         leftFront.setTargetPosition(-((int) (distance * 47.534)));
         rightFront.setTargetPosition(((int) (distance * 47.534)));
-        leftBack.setTargetPosition(((int) (distance * 47.534)));
+        leftBack.setTargetPosition((int) (((int) (distance * 47.534))/1.3));
         rightBack.setTargetPosition(-((int) (distance * 47.534)));
 
         //run to target pos
@@ -89,6 +98,13 @@ public class Mechanum {
         while(leftFront.isBusy()){
 
         }
+    }
+
+    public void stop(){
+        leftFront.setPower(0.0);
+        rightFront.setPower(0.0);
+        leftBack.setPower(0.0);
+        rightBack.setPower(0.0);
     }
 
 

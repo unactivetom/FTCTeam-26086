@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -76,14 +77,15 @@ public class Drive {
         imu.initialize(imuParameters);
         numberOfWheels = motorCount;
 
-        leftBack = hardwareMap.get(DcMotor.class, "LeftBack");
-        rightBack = hardwareMap.get(DcMotor.class, "RightBack");
+        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
         rightBack.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         if(numberOfWheels == 4){
-            leftFront = hardwareMap.get(DcMotor.class, "LeftFront");
-            rightFront = hardwareMap.get(DcMotor.class, "RightFront");
+            leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+            rightFront = hardwareMap.get(DcMotor.class, "rightFront");
             rightFront.setDirection(DcMotor.Direction.REVERSE);
         }
 
