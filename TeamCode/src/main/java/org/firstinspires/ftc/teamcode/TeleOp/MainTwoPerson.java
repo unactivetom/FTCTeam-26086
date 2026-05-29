@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.TeleOp.DECODESEASON.Mechanism;
 //Go to 192.168.49.1:8080/dash for other and 192.168.43.1:8080/dash for control hub
 
 
-@TeleOp(name = "Main", group = "DECODE")
-public class MainTeleOp extends OpMode {
+@TeleOp(name = "MainTwoPerson", group = "DECODE")
+public class MainTwoPerson extends OpMode {
 
     private Mechanism mechanism = new Mechanism();
     private MechanumRobotCentric drive;
@@ -36,9 +36,13 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop(){
         telemetry.addData("### TELEOP ###", "");
+        //mechanism.intakeOn(true);
+        if(gamepad1.share){
+            gamepad1.rumble(10);
+        }
         drive.driveLoop(gamepad1, telemetry);
         telemetry.addData("Brake setting", drive.brake ? "Brake" : "Float");
-        mechanism.loop(gamepad1, telemetry);
+        mechanism.loop(gamepad2, telemetry);
         telemetry.update();
         mainPacket.put("battery: ", hardwareMap.voltageSensor.get("Control Hub").getVoltage());
         dashboard.sendTelemetryPacket(mainPacket);

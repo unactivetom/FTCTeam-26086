@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode.Autonomous.DECODE;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.roadrunnerLib.drive.SampleMecanumDrive;
 
 
 @Autonomous(name = "DECODE BLUE", group = "DECODE")

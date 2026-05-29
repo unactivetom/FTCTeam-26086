@@ -103,15 +103,6 @@ public class Drive {
 
     }
 
-//    protected void goToPosDisFromGoal(double distanceCM, double numberOfWheels){
-//        double distance = distanceSensor.getDistance(DistanceUnit.CM);
-//        double difference = distance - distanceCM;
-//        double leftPower = Math.min(difference, .425);
-//        leftPower = Math.max(difference, -.425);
-//        double rightPower = Math.min(difference, .5);
-//        rightPower = Math.min(difference, -.5);
-//
-//    }
 
     protected void Logger(float leftFrontPower, float rightFrontPower, float leftBackPower, float rightBackPower, Orientation angles, float inputLX, float inputLY, float inputRX){
         main.log();

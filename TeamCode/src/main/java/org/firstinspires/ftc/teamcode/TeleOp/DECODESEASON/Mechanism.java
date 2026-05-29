@@ -53,8 +53,8 @@ public class Mechanism {
         shooter.setDirection(DcMotorSimple.Direction.REVERSE);
         lowerThroughPut.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        speedMap.put(35, 0.6);
-        speedMap.put(50, 0.6);
+        speedMap.put(35, 0.5);
+        speedMap.put(50, 0.55);
         speedMap.put(75, 0.6);
         speedMap.put(100, 0.65);
 
